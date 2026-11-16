@@ -1,18 +1,20 @@
 "use client"
 
-import { useState } from "react"
 import { AuthForm, type SignInData } from "@/components/auth-form"
+import { authClient } from "@/lib/auth-client"
 
 export default function SignInPage() {
-  const [notice, setNotice] = useState("")
-
-  function handleSignIn(data: SignInData) {
-    // TODO: Connect your sign-in API here using data.email and data.password.
-    void data
-    setNotice(
-      "Form data collected. Sign-in functionality will be connected later."
-    )
+  const handleSignIn = async(data: SignInData)=> {
+    const { data: singInResponse, error } = await authClient.signIn.email({
+      email: data.email,
+      password: data.password, 
+      rememberMe: true, 
+      callbackURL: "/", 
+    })
+    console.log("Sign in response", singInResponse, error)
+    console.log("Sign-in form data:", data)
   }
+  
 
-  return <AuthForm mode="sign-in" onSubmit={handleSignIn} notice={notice} />
+  return <AuthForm mode="sign-in" onSubmit={handleSignIn} notice="" />
 }

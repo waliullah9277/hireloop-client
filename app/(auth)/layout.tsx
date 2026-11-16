@@ -1,3 +1,7 @@
+import { setServers } from "node:dns/promises"
+
+setServers(["1.1.1.1", "8.8.8.8"])
+
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"

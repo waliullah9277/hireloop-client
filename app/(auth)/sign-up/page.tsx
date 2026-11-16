@@ -1,17 +1,23 @@
 "use client"
 
-import { useState } from "react"
 import { AuthForm, type SignUpData } from "@/components/auth-form"
+import { authClient } from "@/lib/auth-client"
 
 export default function SignUpPage() {
-  const [notice, setNotice] = useState("")
+  const handleSignUp = async (data: SignUpData) => {
+    console.log("Sign-up form data:", data)
 
-  function handleSignUp(data: SignUpData) {
-    // TODO: Connect your registration API here using data.name, data.email,
-    // and data.password. confirmPassword is only needed for client validation.
-    void data
-    setNotice("Form data collected. Account creation will be connected later.")
+    const { data: signUpResponse, error } = await authClient.signUp.email({
+      name: data.name, 
+      email: data.email, 
+      password: data.password, 
+      
+      callbackURL: "/",
+    })
+    console.log("Sign Up Data Response", signUpResponse, error)
   }
 
-  return <AuthForm mode="sign-up" onSubmit={handleSignUp} notice={notice} />
+  
+
+  return <AuthForm mode="sign-up" onSubmit={handleSignUp} notice="" />
 }

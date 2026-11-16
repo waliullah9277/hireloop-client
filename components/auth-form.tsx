@@ -41,6 +41,8 @@ export function AuthForm(props: AuthFormProps) {
     const email = String(formData.get("email") ?? "").trim()
     const password = String(formData.get("password") ?? "")
 
+    // console.log(formData)
+
     if (props.mode === "sign-up") {
       const name = String(formData.get("name") ?? "").trim()
       const confirmPassword = String(formData.get("confirmPassword") ?? "")
