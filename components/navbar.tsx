@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/collapsible"
 import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
+import { authClient } from "@/lib/auth-client"
 
 const links = [
   { label: "Browse Jobs", href: "/jobs" },
@@ -24,6 +25,19 @@ const links = [
 
 const focusStyle =
   "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a6a0ff]"
+
+function getInitials(name?: string | null, email?: string | null) {
+  const source = name?.trim() || email?.trim() || ""
+  return (
+    source
+      .split(/\s+/)
+      .map((part) => part[0])
+      .filter(Boolean)
+      .slice(0, 2)
+      .join("")
+      .toUpperCase() || "U"
+  )
+}
 
 export function Navbar() {
   const pathname = usePathname()
@@ -112,6 +126,7 @@ function NavbarLinks({
   pathname: string
   onNavigate: () => void
 }) {
+  const { data: session } = authClient.useSession()
   return (
     <>
       <ul className="flex flex-col gap-1 lg:flex-row lg:items-center lg:gap-10">
@@ -143,29 +158,70 @@ function NavbarLinks({
       />
 
       <div className="grid grid-cols-2 items-center gap-4 border-t border-white/10 pt-3 lg:flex lg:border-0 lg:pt-0">
-        <Button
-          variant="ghost"
-          nativeButton={false}
-          render={<Link href="/sign-in" />}
-          onClick={onNavigate}
-          className={cn(
-            "min-h-[52px] rounded-xl px-6 text-lg font-semibold text-white hover:bg-white/10 hover:text-white lg:min-h-[58px]",
-            focusStyle
-          )}
-        >
-          Sign In
-        </Button>
-        <Button
-          nativeButton={false}
-          render={<Link href="/sign-up" />}
-          onClick={onNavigate}
-          className={cn(
-            "min-h-[52px] rounded-xl bg-[#5c53fe] px-4 text-base font-medium text-white hover:bg-[#7068ff] sm:px-6 sm:text-lg lg:min-w-[143px]",
-            focusStyle
-          )}
-        >
-          Get Started
-        </Button>
+        {session?.user ? (
+          <div className="col-span-2 flex items-center gap-3 lg:col-span-1">
+            <span
+              aria-hidden="true"
+              className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#5c53fe] text-sm font-semibold text-white"
+            >
+              {session.user.image ? (
+                // User avatars come from arbitrary external URLs, which
+                // next/image would reject without per-domain config.
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={session.user.image}
+                  alt=""
+                  className="size-full object-cover"
+                />
+              ) : (
+                getInitials(session.user.name, session.user.email)
+              )}
+            </span>
+            <span className="truncate text-base font-medium text-white">
+              Welcome, {session.user.name}
+            </span>
+            <Button
+              variant="ghost"
+              type="button"
+              onClick={async () => {
+                await authClient.signOut()
+                onNavigate()
+              }}
+              className={cn(
+                "ml-auto min-h-11 rounded-xl px-4 text-sm font-medium text-[#ef4444] hover:bg-[#ef4444]/10 hover:text-[#f87171]",
+                focusStyle
+              )}
+            >
+              Sign Out
+            </Button>
+          </div>
+        ) : (
+          <>
+            <Button
+              variant="ghost"
+              nativeButton={false}
+              render={<Link href="/sign-in" />}
+              onClick={onNavigate}
+              className={cn(
+                "min-h-[52px] rounded-xl px-6 text-lg font-semibold text-white hover:bg-white/10 hover:text-white lg:min-h-[58px]",
+                focusStyle
+              )}
+            >
+              Sign In
+            </Button>
+            <Button
+              nativeButton={false}
+              render={<Link href="/sign-up" />}
+              onClick={onNavigate}
+              className={cn(
+                "min-h-[52px] rounded-xl bg-[#5c53fe] px-4 text-base font-medium text-white hover:bg-[#7068ff] sm:px-6 sm:text-lg lg:min-w-[143px]",
+                focusStyle
+              )}
+            >
+              Get Started
+            </Button>
+          </>
+        )}
       </div>
     </>
   )
