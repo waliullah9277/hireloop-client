@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useState, type FormEvent } from "react"
-import { ArrowRight, Eye, EyeOff } from "lucide-react"
+import { ArrowRight, Eye, EyeOff, Shield, UserRound, Users } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -16,7 +16,11 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 export type SignInData = { email: string; password: string }
-export type SignUpData = SignInData & { name: string; confirmPassword: string }
+export type SignUpData = SignInData & {
+  name: string
+  confirmPassword: string
+  role: "seeker" | "recruiter" | "admin"
+}
 
 type AuthFormProps = {
   notice: string
@@ -46,6 +50,11 @@ export function AuthForm(props: AuthFormProps) {
     if (props.mode === "sign-up") {
       const name = String(formData.get("name") ?? "").trim()
       const confirmPassword = String(formData.get("confirmPassword") ?? "")
+      const role = formData.get("role")
+      if (role !== "seeker" && role !== "recruiter" && role !== "admin") {
+        setError("Please select a valid role.")
+        return
+      }
       if (!name) {
         setError("Please enter your full name.")
         return
@@ -57,7 +66,7 @@ export function AuthForm(props: AuthFormProps) {
         if (confirmation instanceof HTMLInputElement) confirmation.focus()
         return
       }
-      props.onSubmit({ name, email, password, confirmPassword })
+      props.onSubmit({ name, email, password, confirmPassword, role })
     } else {
       props.onSubmit({ email, password })
     }
@@ -99,6 +108,48 @@ export function AuthForm(props: AuthFormProps) {
         </nav>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+          {isSignUp && (
+            <fieldset
+              className="space-y-3"
+              aria-describedby={
+                error.includes("role") ? "auth-error" : undefined
+              }
+            >
+              <legend className="text-sm font-medium text-white">
+                Joining HireLoop as
+              </legend>
+              <div className="grid grid-cols-3 gap-3">
+                {(
+                  [
+                    { value: "seeker", label: "Job Seeker", Icon: Users },
+                    { value: "recruiter", label: "Recruiter", Icon: UserRound },
+                    { value: "admin", label: "Admin", Icon: Shield },
+                  ] as const
+                ).map(({ value, label, Icon }) => (
+                  <Label
+                    key={value}
+                    htmlFor={`role-${value}`}
+                    className="flex cursor-pointer flex-col items-center gap-2.5 rounded-xl border border-white/10 bg-[#101010] px-2 py-4 text-sm font-medium text-white/60 transition-colors focus-within:border-[#5c53fe] focus-within:outline-2 focus-within:outline-[#a6a0ff] hover:border-white/25 hover:text-white has-checked:border-[#5c53fe] has-checked:bg-[#5c53fe]/15 has-checked:text-white has-checked:shadow-[0_0_18px_-4px] has-checked:shadow-[#5c53fe]/40"
+                  >
+                    <Icon
+                      className="size-5 shrink-0 text-[#b3abff] has-checked:text-white"
+                      aria-hidden="true"
+                    />
+                    {label}
+                    <input
+                      id={`role-${value}`}
+                      type="radio"
+                      name="role"
+                      value={value}
+                      defaultChecked={value === "seeker"}
+                      required
+                      className="sr-only"
+                    />
+                  </Label>
+                ))}
+              </div>
+            </fieldset>
+          )}
           {isSignUp && (
             <div className="space-y-2">
               <Label htmlFor="name">Full name</Label>
