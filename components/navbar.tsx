@@ -40,7 +40,7 @@ export function Navbar() {
   }, [])
 
   return (
-    <header className="px-4 pt-4 sm:px-6 sm:pt-6 lg:px-10 xl:px-[60px]">
+    <header className="sticky top-0 z-50 bg-[#010102] px-4 py-4 sm:px-6 sm:py-6 lg:px-10 xl:px-[60px]">
       <Collapsible
         render={<nav />}
         open={open}
@@ -146,7 +146,7 @@ function NavbarLinks({
         <Button
           variant="ghost"
           nativeButton={false}
-          render={<Link href="/login" />}
+          render={<Link href="/sign-in" />}
           onClick={onNavigate}
           className={cn(
             "min-h-[52px] rounded-xl px-6 text-lg font-semibold text-white hover:bg-white/10 hover:text-white lg:min-h-[58px]",
@@ -157,7 +157,7 @@ function NavbarLinks({
         </Button>
         <Button
           nativeButton={false}
-          render={<Link href="/register" />}
+          render={<Link href="/sign-up" />}
           onClick={onNavigate}
           className={cn(
             "min-h-[52px] rounded-xl bg-[#5c53fe] px-4 text-base font-medium text-white hover:bg-[#7068ff] sm:px-6 sm:text-lg lg:min-w-[143px]",
