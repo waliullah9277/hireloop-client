@@ -3,6 +3,7 @@ import {
   BriefcaseBusiness,
   ChevronRight,
   MapPin,
+  MoreHorizontal,
   Pencil,
   Plus,
   Trash2,
@@ -21,9 +22,10 @@ import {
 } from "@/components/ui/table"
 import type { NewJobData } from "./new/page"
 import { getJobs } from "@/lib/api/jobs"
+import { DeleteJobDialog } from "@/app/components/DeleteJobDialog"
 
-type Job = NewJobData & {
-  id: string
+export type Job = NewJobData & {
+  _id: string
   applicants: number
   status: "Active" | "Expired"
   posted: string
@@ -104,7 +106,7 @@ export default async function ManageJobPage() {
             <TableBody>
               {jobs.map((job) => (
                 <TableRow
-                  key={job.id}
+                  key={job._id}
                   className="border-white/8 hover:bg-white/[0.025]"
                 >
                   <TableCell className="px-5 py-6">
@@ -185,20 +187,21 @@ export default async function ManageJobPage() {
                         variant="ghost"
                         disabled
                         aria-label={`Update ${job.title} (coming soon)`}
-                        className="h-8 gap-1.5 px-2 text-xs text-white/65 disabled:opacity-60"
+                        size="icon"
+                        className="size-8 text-white/65 disabled:opacity-60"
                       >
                         <Pencil aria-hidden="true" className="size-3.5" />
-                        Update
                       </Button>
+                      <DeleteJobDialog job={job}/>
                       <Button
                         type="button"
                         variant="ghost"
                         size="icon"
                         disabled
-                        aria-label={`Delete ${job.title} (coming soon)`}
-                        className="size-8 text-red-400 disabled:opacity-60"
+                        aria-label={`More actions for ${job.title} (coming soon)`}
+                        className="size-8 text-white/65 disabled:opacity-60"
                       >
-                        <Trash2 aria-hidden="true" className="size-3.5" />
+                        <MoreHorizontal aria-hidden="true" className="size-4" />
                       </Button>
                     </div>
                   </TableCell>

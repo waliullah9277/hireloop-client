@@ -13,3 +13,11 @@ export const createJobs = async (data: NewJobData) => {
 
   return res.json()
 }
+
+
+export const deleteJobs = async(jobId: string) =>{
+  const res = await fetch(`${BASE_URL}/jobs/${jobId}`, {
+    method: "DELETE"
+  })
+  return res.json()
+}
