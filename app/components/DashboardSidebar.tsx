@@ -155,6 +155,17 @@ export function DashboardSidebar() {
     (role === "seeker" || role === "recruiter" || role === "admin")
       ? itemsOnTheRole[role]
       : []
+  const activeItem = items
+    .filter(
+      (item) =>
+        pathname === item.url ||
+        (item.id !== "dashboard" && pathname.startsWith(`${item.url}/`))
+    )
+    .reduce<SidebarItem | undefined>(
+      (closest, item) =>
+        !closest || item.url.length > closest.url.length ? item : closest,
+      undefined
+    )
 
   return (
     <Sidebar>
@@ -168,20 +179,12 @@ export function DashboardSidebar() {
             {items.map((item) => (
               <SidebarMenuItem key={item.id}>
                 <SidebarMenuButton
-                  isActive={
-                    pathname === item.url ||
-                    (item.id !== "dashboard" &&
-                      pathname.startsWith(`${item.url}/`))
-                  }
+                  isActive={activeItem?.id === item.id}
                   render={
                     <Link
                       href={item.url}
                       aria-current={
-                        pathname === item.url ||
-                        (item.id !== "dashboard" &&
-                          pathname.startsWith(`${item.url}/`))
-                          ? "page"
-                          : undefined
+                          activeItem?.id === item.id ? "page" : undefined
                       }
                     />
                   }
