@@ -17,11 +17,7 @@ import { Separator } from "@/components/ui/separator"
 import { cn } from "@/lib/utils"
 import { authClient } from "@/lib/auth-client"
 
-const links = [
-  { label: "Browse Jobs", href: "/jobs" },
-  { label: "Company", href: "/companies" },
-  { label: "Pricing", href: "/pricing" },
-]
+
 
 const focusStyle =
   "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a6a0ff]"
@@ -126,7 +122,18 @@ function NavbarLinks({
   pathname: string
   onNavigate: () => void
 }) {
+
+
+  
+  
   const { data: session } = authClient.useSession()
+
+  const links = [
+    { label: "Browse Jobs", href: "/jobs" },
+    { label: "Company", href: "/companies" },
+    { label: "Pricing", href: "/pricing" },
+    { label: "Dashboard", href: `/dashboard/${session?.user?.role || "seeker"}` },
+  ]
   return (
     <>
       <ul className="flex flex-col gap-1 lg:flex-row lg:items-center lg:gap-10">

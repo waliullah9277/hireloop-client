@@ -9,6 +9,7 @@ import {
   CreditCard,
   FileText,
   LayoutDashboard,
+  PlusCircle,
   Settings,
   Users,
   type LucideIcon,
@@ -81,10 +82,16 @@ const itemsOnTheRole: Record<Role, SidebarItem[]> = {
       icon: LayoutDashboard,
     },
     {
-      id: "jobs",
+      id: "manage-jobs",
       name: "Manage Jobs",
       url: "/dashboard/recruiter/jobs",
       icon: BriefcaseBusiness,
+    },
+    {
+      id: "add-job",
+      name: "Add Job",
+      url: "/dashboard/recruiter/jobs/new",
+      icon: PlusCircle,
     },
     {
       id: "applications",
