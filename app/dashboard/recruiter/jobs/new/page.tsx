@@ -15,22 +15,9 @@ import { createJobs } from "@/lib/actions/jobs/page"
 import { toast } from "@/components/ui/toast"
 import { useRouter } from "next/navigation"
 
-export type NewJobData = {
-  title: string
-  companyName: string
-  category: string
-  jobType: string
-  isRemote: boolean
-  location: string
-  deadline: string
-  minSalary: number | null
-  maxSalary: number | null
-  frequency: string
-  responsibilities: string
-  requirements: string
-  applicants: number
-  status: "Active" | "Expired"
-}
+import type { NewJobData } from "@/types"
+
+export type { NewJobData } from "@/types"
 
 const control =
   "h-11 border-white/10 bg-[#18181d] text-white placeholder:text-white/35 focus-visible:border-[#7770ff] focus-visible:ring-[#5c53fe]/25 dark:bg-[#18181d]"

@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/sidebar"
 import { useSession } from "@/lib/auth-client"
 
-type Role = "seeker" | "recruiter" | "admin"
+import type { Role } from "@/types"
 
 type SidebarItem = {
   id: string

@@ -19,14 +19,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import type { NewJobData } from "./new/page"
+import type { Job } from "@/types"
 import { getJobs } from "@/lib/api/jobs"
 import { DeleteJobDialog } from "@/app/components/DeleteJobDialog"
 
-export type Job = NewJobData & {
-  _id: string
-  posted: string
-}
+export type { Job } from "@/types"
 
 
 

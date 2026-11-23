@@ -1,6 +1,7 @@
 "use client"
 
-import { AuthForm, type SignUpData } from "@/components/auth-form"
+import { AuthForm } from "@/components/auth-form"
+import type { SignUpData } from "@/types"
 import { authClient } from "@/lib/auth-client"
 import { useRouter } from "next/navigation"
 

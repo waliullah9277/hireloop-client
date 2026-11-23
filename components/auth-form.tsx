@@ -15,12 +15,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-export type SignInData = { email: string; password: string }
-export type SignUpData = SignInData & {
-  name: string
-  confirmPassword: string
-  role: "seeker" | "recruiter" | "admin"
-}
+import type { SignInData, SignUpData } from "@/types"
+
+export type { SignInData, SignUpData } from "@/types"
 
 type AuthFormProps = {
   notice: string

@@ -1,6 +1,7 @@
 "use client"
 
-import { AuthForm, type SignInData } from "@/components/auth-form"
+import { AuthForm } from "@/components/auth-form"
+import type { SignInData } from "@/types"
 import { authClient } from "@/lib/auth-client"
 
 export default function SignInPage() {
