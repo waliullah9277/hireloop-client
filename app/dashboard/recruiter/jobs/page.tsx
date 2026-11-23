@@ -6,7 +6,6 @@ import {
   MoreHorizontal,
   Pencil,
   Plus,
-  Trash2,
   Users,
 } from "lucide-react"
 
@@ -26,8 +25,6 @@ import { DeleteJobDialog } from "@/app/components/DeleteJobDialog"
 
 export type Job = NewJobData & {
   _id: string
-  applicants: number
-  status: "Active" | "Expired"
   posted: string
 }
 

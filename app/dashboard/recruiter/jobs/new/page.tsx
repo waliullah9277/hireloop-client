@@ -12,6 +12,8 @@ import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { createJobs } from "@/lib/actions/jobs/page"
+import { toast } from "@/components/ui/toast"
+import { useRouter } from "next/navigation"
 
 export type NewJobData = {
   title: string
@@ -26,6 +28,8 @@ export type NewJobData = {
   frequency: string
   responsibilities: string
   requirements: string
+  applicants: number
+  status: "Active" | "Expired"
 }
 
 const control =
@@ -36,12 +40,11 @@ const selectStyle =
 export default function AddJobPage() {
   const [isRemote, setIsRemote] = useState(false)
   const [error, setError] = useState("")
-  const [submitted, setSubmitted] = useState(false)
+  const router = useRouter();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setError("")
-    setSubmitted(false)
     const formData = new FormData(event.currentTarget)
     const text = (name: string) => String(formData.get(name) ?? "").trim()
     const number = (name: string) =>
@@ -61,6 +64,8 @@ export default function AddJobPage() {
       frequency: text("frequency"),
       responsibilities: text("responsibilities"),
       requirements: text("requirements"),
+      applicants: number("applicants") ?? 0,
+      status: "Active",
     }
 
     if (
@@ -86,9 +91,14 @@ export default function AddJobPage() {
     console.log("New job form data:", jobData)
     // TODO: await fetch("/api/jobs", { method: "POST", ... })
     const result = await createJobs(jobData)
-    setSubmitted(true)
-
-    console.log(result)
+    if (result.insertedId) {
+      console.log(result)
+      toast.add({
+        title: "Job Created",
+        description: "The job has been created successfully.",
+      })
+      router.push("/dashboard/recruiter/jobs")
+    }
   }
 
   return (
@@ -124,7 +134,6 @@ export default function AddJobPage() {
           onSubmit={handleSubmit}
           onChange={() => {
             setError("")
-            setSubmitted(false)
           }}
           className="space-y-6"
         >
@@ -223,7 +232,6 @@ export default function AddJobPage() {
                 checked={isRemote}
                 onCheckedChange={(checked) => {
                   setIsRemote(checked)
-                  setSubmitted(false)
                 }}
                 aria-describedby="remote-hint"
                 className="data-checked:bg-[#5c53fe] data-unchecked:bg-white/20"

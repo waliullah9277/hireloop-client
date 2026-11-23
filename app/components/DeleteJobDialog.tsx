@@ -44,17 +44,15 @@ export function DeleteJobDialog({ job }: { job: Job}) {
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger
         render={
-          <Button variant="destructive">
             <Button
               type="button"
               variant="ghost"
-              disabled
               size="icon"
+              aria-label={`Delete ${job.title}`}
               className="size-8 text-red-400 disabled:opacity-60"
             >
               <Trash2 aria-hidden="true" className="size-3.5" />
             </Button>
-          </Button>
         }
       />
       <AlertDialogContent size="sm">
