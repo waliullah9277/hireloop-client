@@ -1,3 +1,5 @@
+import { getJobs } from '@/lib/api/jobs';
+import { NewJobData } from '@/types';
 import React from 'react';
 
 const BrowseJobPage = async({
@@ -12,8 +14,15 @@ const BrowseJobPage = async({
 
   console.log(query)
 
+  const jobs = await getJobs()
+
   return <div>
     BrowseJobPage
+    {
+      jobs.map((job: NewJobData) => {
+        {job.title}
+      })
+    }
     </div>
 }
 
