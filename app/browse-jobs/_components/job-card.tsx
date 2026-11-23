@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import type { Job } from "@/types"
+import { useRouter } from "next/navigation"
 
 export function JobCard({ job }: { job: Job }) {
   const initials = job.companyName
@@ -18,8 +19,16 @@ export function JobCard({ job }: { job: Job }) {
   const frequency =
     { hour: "hr", month: "mo", year: "yr" }[job.frequency] ?? job.frequency
 
+  const router = useRouter()
+  const handleDetailsPage = (jobId: string) => {
+    router.push(`/browse-jobs/${jobId}`)
+  }
+
   return (
-    <Card className="rounded-xl border-white/10 bg-[#141418] py-0 text-[#ededf0] shadow-none transition-colors hover:border-white/20">
+    <Card
+      onClick={()=>handleDetailsPage(job._id)}
+      className="rounded-xl border-white/10 bg-[#141418] py-0 text-[#ededf0] shadow-none transition-colors hover:border-white/20 cursor-pointer"
+    >
       <CardContent className="flex gap-3 p-4 sm:gap-5 sm:p-6">
         <span
           aria-hidden="true"
